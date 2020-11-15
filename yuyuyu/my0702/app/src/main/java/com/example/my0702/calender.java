@@ -10,6 +10,7 @@ import android.widget.RadioButton;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.os.Bundle;
+import android.widget.Toast;
 
 public class calender extends AppCompatActivity {
     private TextView TextView1,TextView2;
@@ -21,14 +22,19 @@ public class calender extends AppCompatActivity {
     private String aa;
     int oldVaue;
     private RadioButton
+            mRadioButton0,
             mRadioButton1,
             mRadioButton2,
             mRadioButton3,
             mRadioButton4,
             mRadioButton5,
             mRadioButton6,
-            mRadioButton7;
-    String ad,ae;
+            mRadioButton7,
+            mRadioButton8,
+            mRadioButton9,
+            mRadioButton10,
+            mRadioButton11;
+    String ad,ae,aw;
     private EditText diary;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +50,8 @@ public class calender extends AppCompatActivity {
         btn1111 = findViewById(R.id.game_next_button);
         btn0000.setOnClickListener(buttonback);
         btn1111.setOnClickListener(btnAdd1OnClick123456);
+
+        mRadioButton0 = findViewById(R.id.radioButtonpersonal);
         mRadioButton1 = findViewById(R.id.radioButton13);
         mRadioButton2 = findViewById(R.id.radioButton12);
         mRadioButton3 = findViewById(R.id.radioButton11);
@@ -51,6 +59,10 @@ public class calender extends AppCompatActivity {
         mRadioButton5 = findViewById(R.id.radioButton17);
         mRadioButton6 = findViewById(R.id.radioButton14);
         mRadioButton7 = findViewById(R.id.radioButton16);
+        mRadioButton8 = findViewById(R.id.radioButtonsun);
+        mRadioButton9 = findViewById(R.id.radioButtoncludy);
+        mRadioButton10 = findViewById(R.id.radioButtonrainy);
+        mRadioButton11= findViewById(R.id.radioButtonstorm);
         TextView2 = findViewById(R.id.text_to_change);
         changeTextViewValueRandomlyOnButtonClick();
 
@@ -77,33 +89,54 @@ public class calender extends AppCompatActivity {
     private View.OnClickListener btnAdd1OnClick123456 = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+            if (mRadioButton8.isChecked()) {
+                aw = "晴天";
+            } else if (mRadioButton9.isChecked()) {
+                aw = "陰涼";
+            } else if (mRadioButton10.isChecked()) {
+                aw = "雨天";
+            } else if (mRadioButton11.isChecked()) {
+                aw = "雷雨交加";
+            }
 
-            if (mRadioButton1.isChecked()) {
+
+            if (mRadioButton0.isChecked()) {
+                ad = "自己";
+            } else if (mRadioButton1.isChecked()) {
                 ad = "家人";
-            } else if(mRadioButton2.isChecked()) {
+            } else if (mRadioButton2.isChecked()) {
                 ad = "同學/朋友";
-            } else if(mRadioButton3.isChecked()) {
+            } else if (mRadioButton3.isChecked()) {
                 ad = "老師";
             }
 
 
-
-            if(mRadioButton4.isChecked()) {
+            if (mRadioButton4.isChecked()) {
                 ae = "早上";
-            } else if(mRadioButton5.isChecked()) {
+            } else if (mRadioButton5.isChecked()) {
                 ae = "中午";
-            } else if(mRadioButton6.isChecked()) {
+            } else if (mRadioButton6.isChecked()) {
                 ae = "下午";
-            } else if(mRadioButton7.isChecked()) {
+            } else if (mRadioButton7.isChecked()) {
                 ae = "晚上";
             }
-            //String result1 = MainActivityloginSQL.executeQuery1(" UPDATE preference SET `sportplace`='\"+a1+\"',`slimming` = '\"+a3+\"',`fitness` = '\"+a4+\"',`shaping` = '\"+a5+\"', strengthen = '\"+a6+\"',`foodplace` = '\"+a2+\"' WHERE account = '\"+mn5.getText().toString()+\"'");
-            String result1 = MainActivityloginSQL.executeQuery1("UPDATE calender SET `person`='"+ad+"' WHERE id = '"+TextView1.getText().toString()+"'");
-            String result2 = MainActivityloginSQL.executeQuery1("UPDATE calender SET `time`='"+ae+"' WHERE id = '"+TextView1.getText().toString()+"'");
-            String result3 = MainActivityloginSQL.executeQuery1("UPDATE calender SET `diary`='"+TextView2.getText().toString()+"' WHERE id = '"+TextView1.getText().toString()+"'");
-            Intent intent = new Intent(calender.this, MainActivity.class);
-            intent.putExtra("account", TextView1.getText().toString());//"姓名:"
-            startActivity(intent);//跳轉到倒計時頁面
+
+            if (TextView2.getText().toString().matches("")) {
+
+
+                Toast toast = Toast.makeText(calender.this, "日記欄位空白，按旁邊隨機按鈕參考一下吧", Toast.LENGTH_LONG);
+                toast.show();
+
+            } else {
+                //String result1 = MainActivityloginSQL.executeQuery1(" UPDATE preference SET `sportplace`='\"+a1+\"',`slimming` = '\"+a3+\"',`fitness` = '\"+a4+\"',`shaping` = '\"+a5+\"', strengthen = '\"+a6+\"',`foodplace` = '\"+a2+\"' WHERE account = '\"+mn5.getText().toString()+\"'");
+                String result1 = MainActivityloginSQL.executeQuery1("UPDATE calender SET `person`='" + ad + "' WHERE id = '" + TextView1.getText().toString() + "'");
+                String result2 = MainActivityloginSQL.executeQuery1("UPDATE calender SET `time`='" + ae + "' WHERE id = '" + TextView1.getText().toString() + "'");
+                String result3 = MainActivityloginSQL.executeQuery1("UPDATE calender SET `diary`='" + TextView2.getText().toString() + "' WHERE id = '" + TextView1.getText().toString() + "'");
+                String result4 = MainActivityloginSQL.executeQuery1("UPDATE calender SET `weather`='" + aw + "' WHERE id = '" + TextView1.getText().toString() + "'");
+                Intent intent = new Intent(calender.this, MainActivity.class);
+                intent.putExtra("account", TextView1.getText().toString());//"姓名:"
+                startActivity(intent);//跳轉到倒計時頁面
+            }
         }
     };
     private View.OnClickListener buttonback= new View.OnClickListener() {
